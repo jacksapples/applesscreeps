@@ -34,7 +34,7 @@ module.exports = {
                 }
             } else {
                 // If no other construction sites, repair structures
-                target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                let target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                     filter: s => s.hits < s.hitsMax && s.structureType !== STRUCTURE_WALL
                 });
                 if (target) {
