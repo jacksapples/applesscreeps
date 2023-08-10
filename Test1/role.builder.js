@@ -54,7 +54,28 @@ module.exports = {
                 }
             }
         } else {
-            // Similar logic to the original for harvesting energy...
+            
+    // Find the closest active source that's not in a hostile zone
+    const pathOpts = {
+        costCallback: function(roomName, costMatrix) {
+            if (Memory.hostileZone && Memory.hostileZone.roomName === roomName && Game.time < Memory.hostileZone.endTick) {
+                costMatrix.set(Memory.hostileZone.x, Memory.hostileZone.y, 255);
+            }
+        }
+    };
+    const source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE, {
+        filter: (s) => {
+            return !Memory.hostileZone || (s.pos.x !== Memory.hostileZone.x && s.pos.y !== Memory.hostileZone.y);
+        },
+        pathOpts
+    });
+
+    if (source) {
+        if (creep.harvest(source) === ERR_NOT_IN_RANGE) {
+            creep.moveTo(source);
+        }
+    }
+    
         }
 
         // If the creep is under attack, move to a safe location
