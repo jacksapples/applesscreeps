@@ -22,7 +22,7 @@ const bodyTemplates = {
         550: ['MOVE', 'MOVE', 'ATTACK', 'ATTACK'],
         800: ['MOVE', 'MOVE', 'MOVE', 'ATTACK', 'ATTACK', 'ATTACK'],
         1300: ['MOVE', 'MOVE', 'MOVE', 'MOVE', 'RANGED_ATTACK', 'RANGED_ATTACK', 'ATTACK', 'ATTACK']
-    }
+    },
     upgrader: {
         300: ['WORK', 'CARRY', 'MOVE'],
         550: ['WORK', 'WORK', 'CARRY', 'MOVE', 'MOVE'],
