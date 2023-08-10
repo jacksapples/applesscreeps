@@ -37,13 +37,19 @@ module.exports = {
                     creep.moveTo(target);
                 }
             } else {
-                // If no construction sites, repair structures
+                // If no construction sites, repair the most damaged structures
                 target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                    filter: s => s.hits < s.hitsMax && s.structureType !== STRUCTURE_WALL
+                    filter: s => s.hits < s.hitsMax && s.structureType !== STRUCTURE_WALL,
+                    sorting: (a, b) => a.hits - b.hits  // Prioritize the most damaged
                 });
                 if (target) {
                     if (creep.repair(target) === ERR_NOT_IN_RANGE) {
                         creep.moveTo(target);
+                    }
+                } else {
+                    // If nothing to repair, then upgrade the controller
+                    if (creep.upgradeController(creep.room.controller) === ERR_NOT_IN_RANGE) {
+                        creep.moveTo(creep.room.controller);
                     }
                 }
             }
