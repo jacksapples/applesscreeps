@@ -2,7 +2,40 @@ var roleHarvester = require('role.harvester');
 var roleBuilder = require('role.builder');
 var roleUpgrader = require('role.upgrader');
 var roleAttacker = require('role.attacker');
-// var role
+
+const bodyTemplates = {
+    harvester: {
+        300: ['WORK', 'CARRY', 'MOVE'],
+        550: ['WORK', 'WORK', 'CARRY', 'MOVE', 'MOVE'],
+        800: ['WORK', 'WORK', 'WORK', 'CARRY', 'MOVE', 'MOVE', 'MOVE'],
+        1300: ['WORK', 'WORK', 'WORK', 'WORK', 'CARRY', 'CARRY', 'MOVE', 'MOVE', 'MOVE', 'MOVE']
+    },
+    builder: {
+        300: ['WORK', 'CARRY', 'MOVE'],
+        550: ['WORK', 'CARRY', 'CARRY', 'MOVE', 'MOVE'],
+        800: ['WORK', 'WORK', 'CARRY', 'CARRY', 'MOVE', 'MOVE', 'MOVE'],
+        1300: ['WORK', 'WORK', 'WORK', 'CARRY', 'CARRY', 'MOVE', 'MOVE', 'MOVE', 'MOVE']
+    },
+    upgrader: {
+        300: ['WORK', 'CARRY', 'MOVE'],
+        550: ['WORK', 'WORK', 'CARRY', 'MOVE', 'MOVE'],
+        800: ['WORK', 'WORK', 'CARRY', 'CARRY', 'MOVE', 'MOVE'],
+        1300: ['WORK', 'WORK', 'WORK', 'CARRY', 'CARRY', 'MOVE', 'MOVE', 'MOVE']
+    }
+};
+
+function getBestBody(role, energyAvailable) {
+    let template = bodyTemplates[role];
+    let chosenBody = [];
+    for (let energy of [1300, 800, 550, 300]) {
+        if (energyAvailable >= energy) {
+            chosenBody = template[energy];
+            break;
+        }
+    }
+    return chosenBody;
+}
+
 // Task Management Functions
 
 function updateTasks() {
