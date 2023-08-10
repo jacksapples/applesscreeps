@@ -2,7 +2,7 @@ var roleHarvester = require('role.harvester');
 var roleBuilder = require('role.builder');
 var roleUpgrader = require('role.upgrader');
 var roleAttacker = require('role.attacker');
-
+// var role
 // Task Management Functions
 
 function updateTasks() {
