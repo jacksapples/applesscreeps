@@ -81,7 +81,7 @@ const PRIORITY_STRUCTURES = [
         }
     }
 
-    const pathOpts = {
+    pathOpts = {
         costCallback: function(roomName, costMatrix) {
             if (Memory.hostileZone && Memory.hostileZone.roomName === roomName && Game.time < Memory.hostileZone.endTick) {
                 costMatrix.set(Memory.hostileZone.x, Memory.hostileZone.y, 255);
