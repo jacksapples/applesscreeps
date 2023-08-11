@@ -12,6 +12,7 @@ module.exports = {
         // Priority hierarchy for building
         
 const PRIORITY_STRUCTURES = [
+    STRUCTURE_CONTAINER,
     STRUCTURE_STORAGE,
     STRUCTURE_TOWER,
     STRUCTURE_ROAD,
@@ -57,7 +58,30 @@ const PRIORITY_STRUCTURES = [
             }
         } else {
             
-    // Find the closest active source that's not in a hostile zone
+    
+    // Find the closest energy storage (either source, storage, or container)
+    const harvestingPathOpts = {
+        costCallback: function(roomName, costMatrix) {
+            if (Memory.hostileZone && Memory.hostileZone.roomName === roomName && Game.time < Memory.hostileZone.endTick) {
+                costMatrix.set(Memory.hostileZone.x, Memory.hostileZone.y, 255);
+            }
+        }
+    };
+
+    const energySources = creep.pos.findClosestByPath([FIND_SOURCES_ACTIVE, FIND_STRUCTURES], {
+        filter: (s) => {
+            return (!Memory.hostileZone || (s.pos.x !== Memory.hostileZone.x && s.pos.y !== Memory.hostileZone.y)) && 
+                   (s.structureType === undefined || s.structureType === STRUCTURE_STORAGE || s.structureType === STRUCTURE_CONTAINER);
+        },
+        pathOpts
+    });
+
+    if (energySources) {
+        if (creep.harvest(energySources) === ERR_NOT_IN_RANGE && creep.withdraw(energySources, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+            creep.moveTo(energySources);
+        }
+    }
+
     const pathOpts = {
         costCallback: function(roomName, costMatrix) {
             if (Memory.hostileZone && Memory.hostileZone.roomName === roomName && Game.time < Memory.hostileZone.endTick) {
