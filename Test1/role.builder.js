@@ -1,6 +1,15 @@
 
 module.exports = {
-    run: function(creep) {
+    
+run: function(creep) {
+    let pathOpts = {
+        costCallback: function(roomName, costMatrix) {
+            if (Memory.hostileZone && Memory.hostileZone.roomName === roomName && Game.time < Memory.hostileZone.endTick) {
+                costMatrix.set(Memory.hostileZone.x, Memory.hostileZone.y, 255);
+            }
+        }
+    };
+
         // Switching between working and harvesting
         if (creep.memory.working && creep.carry.energy === 0) {
             creep.memory.working = false;
@@ -12,6 +21,7 @@ module.exports = {
         // Priority hierarchy for building
         
 const PRIORITY_STRUCTURES = [
+    STRUCTURE_CONTAINER,
     STRUCTURE_STORAGE,
     STRUCTURE_TOWER,
     STRUCTURE_ROAD,
