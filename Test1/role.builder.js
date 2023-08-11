@@ -10,15 +10,17 @@ module.exports = {
         }
 
         // Priority hierarchy for building
-        const PRIORITY_STRUCTURES = [
-            STRUCTURE_EXTENSION,
-            STRUCTURE_ROAD,
-            STRUCTURE_TOWER,
-            STRUCTURE_STORAGE,
-            STRUCTURE_WALL,
-            STRUCTURE_RAMPART
-            // ... add more structures as required
-        ];
+        
+const PRIORITY_STRUCTURES = [
+    STRUCTURE_STORAGE,
+    STRUCTURE_TOWER,
+    STRUCTURE_ROAD,
+    STRUCTURE_EXTENSION,
+    STRUCTURE_SPAWN,
+    STRUCTURE_WALL,
+    STRUCTURE_RAMPART,
+    // ... add more structures as required
+];
 
         // If working, find the most important construction site
         if (creep.memory.working) {
