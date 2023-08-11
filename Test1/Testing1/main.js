@@ -234,18 +234,3 @@ module.exports.loop = function() {
 
     spawnCreeps();
 }
-// Dynamic body calculation for harvesters based on available energy
-function getHarvesterBody(availableEnergy) {
-    if (availableEnergy >= 1300) {
-        return [WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE];
-    } else if (availableEnergy >= 800) {
-        return [WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE];
-    } else if (availableEnergy >= 550) {
-        return [WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE];
-    } else if (availableEnergy >= 300) {
-        return [WORK, WORK, CARRY, CARRY, MOVE, MOVE];
-    } else {
-        return [WORK, CARRY, MOVE];
-    }
-}
-
