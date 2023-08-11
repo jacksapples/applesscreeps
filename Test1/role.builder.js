@@ -12,7 +12,6 @@ module.exports = {
         // Priority hierarchy for building
         
 const PRIORITY_STRUCTURES = [
-    STRUCTURE_CONTAINER,
     STRUCTURE_STORAGE,
     STRUCTURE_TOWER,
     STRUCTURE_ROAD,
@@ -60,7 +59,7 @@ const PRIORITY_STRUCTURES = [
             
     
     // Find the closest energy storage (either source, storage, or container)
-    const harvestingPathOpts = {
+    pathOpts = {
         costCallback: function(roomName, costMatrix) {
             if (Memory.hostileZone && Memory.hostileZone.roomName === roomName && Game.time < Memory.hostileZone.endTick) {
                 costMatrix.set(Memory.hostileZone.x, Memory.hostileZone.y, 255);
