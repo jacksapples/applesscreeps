@@ -22,21 +22,50 @@ module.exports = {
         var repairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer');
 
         if(harvesters.length < MIN_HARVESTERS) {
-            this.spawnCreep(spawn, [WORK, CARRY, MOVE], 'harvester');
+            this.spawnCreep(spawn, this.getBodyParts('harvester'), 'harvester');
         } else if(upgraders.length < MIN_UPGRADERS) {
-            this.spawnCreep(spawn, [WORK, CARRY, MOVE], 'upgrader');
+            this.spawnCreep(spawn, this.getBodyParts('upgrader'), 'upgrader');
         } else if(builders.length < MIN_BUILDERS) {
-            this.spawnCreep(spawn, [WORK, CARRY, MOVE], 'builder');
+            this.spawnCreep(spawn, this.getBodyParts('builder'), 'builder');
         } else if(defenders.length < MIN_DEFENDERS) {
-            this.spawnCreep(spawn, [TOUGH, ATTACK, MOVE], 'defender');
+            this.spawnCreep(spawn, this.getBodyParts('defender'), 'defender');
         } else if(repairers.length < MIN_REPAIRERS) {
-            this.spawnCreep(spawn, [WORK, CARRY, MOVE], 'repairer');
+            this.spawnCreep(spawn, this.getBodyParts('repairer'), 'repairer');
         }
     },
 
     spawnCreep: function(spawn, body, role) {
         var newName = role.charAt(0).toUpperCase() + role.slice(1) + Game.time;
         spawn.spawnCreep(body, newName, {memory: {role: role}});
+    },
+
+    getBodyParts: function(role) {
+        var body = [];
+        var availableEnergy = Game.spawns['Spawn1'].room.energyCapacityAvailable;
+
+        if (role === 'harvester' || role === 'upgrader') {
+            var numOfParts = Math.floor(availableEnergy / 200);
+            for (let i = 0; i < numOfParts; i++) {
+                body.push(WORK);
+                body.push(CARRY);
+                body.push(MOVE);
+            }
+        } else if (role === 'builder' || role === 'repairer') {
+            var numOfParts = Math.floor(availableEnergy / 200);
+            for (let i = 0; i < numOfParts; i++) {
+                body.push(WORK);
+                body.push(CARRY);
+                body.push(MOVE);
+            }
+        } else if (role === 'defender') {
+            var numOfParts = Math.floor(availableEnergy / 150);
+            for (let i = 0; i < numOfParts; i++) {
+                body.push(TOUGH);
+                body.push(ATTACK);
+                body.push(MOVE);
+            }
+        }
+        return body;
     }
 };
 
