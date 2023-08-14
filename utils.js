@@ -22,15 +22,15 @@ module.exports = {
         var repairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer');
 
         if(harvesters.length < MIN_HARVESTERS) {
-            spawnCreep(spawn, [WORK, CARRY, MOVE], 'harvester');
+            this.spawnCreep(spawn, [WORK, CARRY, MOVE], 'harvester');
         } else if(upgraders.length < MIN_UPGRADERS) {
-            spawnCreep(spawn, [WORK, CARRY, MOVE], 'upgrader');
+            this.spawnCreep(spawn, [WORK, CARRY, MOVE], 'upgrader');
         } else if(builders.length < MIN_BUILDERS) {
-            spawnCreep(spawn, [WORK, CARRY, MOVE], 'builder');
+            this.spawnCreep(spawn, [WORK, CARRY, MOVE], 'builder');
         } else if(defenders.length < MIN_DEFENDERS) {
-            spawnCreep(spawn, [TOUGH, ATTACK, MOVE], 'defender');
+            this.spawnCreep(spawn, [TOUGH, ATTACK, MOVE], 'defender');
         } else if(repairers.length < MIN_REPAIRERS) {
-            spawnCreep(spawn, [WORK, CARRY, MOVE], 'repairer');
+            this.spawnCreep(spawn, [WORK, CARRY, MOVE], 'repairer');
         }
     },
 
@@ -39,3 +39,4 @@ module.exports = {
         spawn.spawnCreep(body, newName, {memory: {role: role}});
     }
 };
+
