@@ -18,6 +18,15 @@ module.exports = {
                     filter: (s) => (s.structureType == STRUCTURE_SPAWN || s.structureType == STRUCTURE_EXTENSION) &&
                                   s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
                 });
+
+                // If no spawn or extension is found, look for other structures to transfer energy
+                if(!target) {
+                    target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                        filter: (s) => (s.structureType == STRUCTURE_STORAGE || s.structureType == STRUCTURE_TOWER) &&
+                                      s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+                    });
+                }
+
                 console.log('Harvesting creep target:', target);
 
                 if(!target) {
