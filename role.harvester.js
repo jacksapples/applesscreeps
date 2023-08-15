@@ -21,7 +21,7 @@ module.exports = {
                 console.log('Harvesting creep target:', target);
 
                 if(!target) {
-                    console.error('No valid target found for harvester creep:', creep.name);
+                    console.log('No valid target found for harvester creep:', creep.name);
                     return;
                 }
 
@@ -34,7 +34,7 @@ module.exports = {
                 console.log('Harvesting source:', source);
 
                 if(!source) {
-                    console.error('No active source found for harvester creep:', creep.name);
+                    console.log('No active source found for harvester creep:', creep.name);
                     return;
                 }
 
