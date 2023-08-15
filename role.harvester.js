@@ -3,28 +3,48 @@ var utils = require('utils');
 
 module.exports = {
     run: function(creep) {
-        if(creep.memory.harvesting && creep.store[RESOURCE_ENERGY] == 0) {
-            creep.memory.harvesting = false;
-        }
-        if(!creep.memory.harvesting && creep.store.getFreeCapacity() == 0) {
-            creep.memory.harvesting = true;
-        }
+        try {
+            console.log('Running harvester role for creep:', creep.name);
+            
+            if(creep.memory.harvesting && creep.store[RESOURCE_ENERGY] == 0) {
+                creep.memory.harvesting = false;
+            }
+            if(!creep.memory.harvesting && creep.store.getFreeCapacity() == 0) {
+                creep.memory.harvesting = true;
+            }
 
-        if(creep.memory.harvesting) {
-            var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                filter: (s) => (s.structureType == STRUCTURE_SPAWN || s.structureType == STRUCTURE_EXTENSION) &&
-                              s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
-            });
-            if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(target);
-                this.buildRoad(creep);
+            if(creep.memory.harvesting) {
+                var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                    filter: (s) => (s.structureType == STRUCTURE_SPAWN || s.structureType == STRUCTURE_EXTENSION) &&
+                                  s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+                });
+                console.log('Harvesting creep target:', target);
+
+                if(!target) {
+                    console.error('No valid target found for harvester creep:', creep.name);
+                    return;
+                }
+
+                if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(target);
+                    this.buildRoad(creep);
+                }
+            } else {
+                var source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+                console.log('Harvesting source:', source);
+
+                if(!source) {
+                    console.error('No active source found for harvester creep:', creep.name);
+                    return;
+                }
+
+                if(creep.harvest(source) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(source);
+                    this.buildRoad(creep);
+                }
             }
-        } else {
-            var source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
-            if(creep.harvest(source) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(source);
-                this.buildRoad(creep);
-            }
+        } catch (error) {
+            console.log('Error in harvester role for creep ' + creep.name + ':', error.stack);
         }
     },
 
@@ -41,4 +61,5 @@ module.exports = {
             creep.pos.createConstructionSite(STRUCTURE_ROAD);
         }
     }
-};
+    
+}
