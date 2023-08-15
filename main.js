@@ -4,6 +4,8 @@ const roleUpgrader = require('role.upgrader');
 const roleBuilder = require('role.builder');
 const roleDefender = require('role.defender');
 const roleRepairer = require('role.repairer');
+const roleScout = require('role.scout');
+const roleClaimer = require('role.claimer');
 const utils = require('utils');
 
 module.exports.loop = function () {
@@ -30,6 +32,12 @@ module.exports.loop = function () {
             case 'repairer':
                 roleRepairer.run(creep);
                 break;
+            case 'scout':
+                roleScout.run(creep);
+                break;
+            case 'claimer':
+                roleClaimer.run(creep);
+                break;
         }
     }
     
@@ -51,5 +59,17 @@ module.exports.loop = function () {
                 tower.repair(closestDamagedStructure);
             }
         }
+    }
+    
+    // Exploration logic: If no scout exists, spawn one
+    var scouts = _.filter(Game.creeps, (creep) => creep.memory.role == 'scout');
+    if (scouts.length < 1) {
+        utils.spawnCreep(spawn, [MOVE], 'scout');
+    }
+    
+    // Claiming logic: If a room has been identified for claiming and no claimer exists, spawn one
+    var claimers = _.filter(Game.creeps, (creep) => creep.memory.role == 'claimer');
+    if (Memory.targetClaimRoom && claimers.length < 1) {
+        utils.spawnCreep(spawn, [CLAIM, MOVE], 'claimer');
     }
 }
