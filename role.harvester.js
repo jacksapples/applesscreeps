@@ -1,4 +1,3 @@
-
 var utils = require('utils');
 
 module.exports = {
@@ -19,10 +18,30 @@ module.exports = {
                                   s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
                 });
 
-                // If no spawn or extension is found, look for other structures to transfer energy
                 if(!target) {
                     target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                        filter: (s) => (s.structureType == STRUCTURE_STORAGE || s.structureType == STRUCTURE_TOWER) &&
+                        filter: (s) => (s.structureType == STRUCTURE_TOWER) &&
+                                      s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+                    });
+                }
+
+                if(!target) {
+                    target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                        filter: (s) => (s.structureType == STRUCTURE_STORAGE || s.structureType == STRUCTURE_CONTAINER) &&
+                                      s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+                    });
+                }
+
+                if(!target) {
+                    target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                        filter: (s) => s.structureType == STRUCTURE_LINK &&
+                                      s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+                    });
+                }
+
+                if(!target) {
+                    target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                        filter: (s) => s.structureType == STRUCTURE_TERMINAL &&
                                       s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
                     });
                 }
@@ -56,7 +75,6 @@ module.exports = {
             console.log('Error in harvester role for creep ' + creep.name + ':', error.stack);
         }
     },
-
     buildRoad: function(creep) {
         var atPos = creep.pos.lookFor(LOOK_STRUCTURES);
         var roadFound = false;
@@ -70,5 +88,4 @@ module.exports = {
             creep.pos.createConstructionSite(STRUCTURE_ROAD);
         }
     }
-    
 }
